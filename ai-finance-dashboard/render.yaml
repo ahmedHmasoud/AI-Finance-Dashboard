@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: ai-finance-dashboard-api
+    env: docker
+    dockerfilePath: ./server/Dockerfile
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 8080
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DB_URL
+        fromDatabase:
+          name: ai-finance-db
+          property: connectionString
+      - key: CORS_ORIGIN
+        value: https://client-375yhkzb5-ahmed-hameds-projects-e3cf5bed.vercel.app
+      - key: OPENAI_API_KEY
+        sync: false
+
+databases:
+  - name: ai-finance-db
+    plan: free
+    ipAllowList: []

@@ -10,7 +10,15 @@ require('./config/passport');
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: process.env.NODE_ENV === 'production' 
+        ? [
+            'https://client-g6jmdjcyh-ahmed-hameds-projects-e3cf5bed.vercel.app',
+            /\.vercel\.app$/
+          ]
+        : 'http://localhost:3000',
+    credentials: true
+}));
 app.use(helmet());
 app.use(morgan('dev'));
 app.use(express.json());

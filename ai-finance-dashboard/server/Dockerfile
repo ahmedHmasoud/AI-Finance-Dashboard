@@ -1,18 +1,24 @@
-FROM node:16
+FROM node:18-alpine
 
-WORKDIR /app
+# Create app directory
+WORKDIR /usr/src/app
 
-# Copy package files
+# Install app dependencies
 COPY package*.json ./
+RUN npm ci --only=production
 
-# Install dependencies
-RUN npm install
-
-# Copy source code
+# Bundle app source
 COPY . .
 
+# Add user
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+
 # Expose port
-EXPOSE 5000
+EXPOSE 8080
+
+# Set production environment
+ENV NODE_ENV=production
 
 # Start command
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
